@@ -17,14 +17,26 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+class Plant extends Component {
+  render() {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>Your plant: {this.props.name}!</Text>
+      </View>
+    )
+  }
+}
+
 type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text style={styles.welcome}>Welcome to GroMet!</Text>
+
+        <Plant name='lily' />
+        <Plant name='orchid' />
+        <Plant name='daisy' />
       </View>
     );
   }
@@ -47,4 +59,10 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  plants: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#006622',
+  }
 });
