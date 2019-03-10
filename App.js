@@ -33,7 +33,6 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to GroMet!</Text>
-
         <Plant name='lily' />
         <Plant name='orchid' />
         <Plant name='daisy' />
