@@ -11,11 +11,11 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
 
-const ViewTypes = {
-    FULL: 0,
-    HALF_LEFT: 1,
-    HALF_RIGHT: 2
-};
+// const ViewTypes = {
+//     FULL: 0,
+//     HALF_LEFT: 1,
+//     HALF_RIGHT: 2
+// };
 
 let containerCount = 0;
 
@@ -99,29 +99,11 @@ export default class RecycleTestComponent extends React.Component {
 
     //Given type and data return the view component
     _rowRenderer(type, data) {
-        //You can return any view here, PlantContainer has no special significance
-        switch (type) {
-            case ViewTypes.HALF_LEFT:
-                return (
-                    <PlantContainer style={styles.containerGridLeft}>
-                        <Text>Data: {data}</Text>
-                    </PlantContainer>
-                );
-            case ViewTypes.HALF_RIGHT:
-                return (
-                    <PlantContainer style={styles.containerGridRight}>
-                        <Text>Data: {data}</Text>
-                    </PlantContainer>
-                );
-            case ViewTypes.FULL:
-                return (
-                    <PlantContainer style={styles.container}>
-                        <Text>Data: {data}</Text>
-                    </PlantContainer>
-                );
-            default:
-                return null;
-        }
+        return (
+            <PlantContainer style={styles.container}>
+                <Text>Data: {data}</Text>
+            </PlantContainer>
+        );
     }
 
     render() {
