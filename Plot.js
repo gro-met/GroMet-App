@@ -8,7 +8,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
 
 const ViewTypes = { // more view types can be added if needed
@@ -18,16 +18,22 @@ const ViewTypes = { // more view types can be added if needed
 let containerCount = 0;
 
 class PlantContainer extends React.Component {
-    constructor(args) {
-        super(args);
-        this._containerId = containerCount++;
-    }
-    render() {
-        return (<View style={{flex:1, flexDirection: 'row'}}{...this.props}>
-                  <View style={{flex:1}}{this.props.children} </View>
-                  <Text style={{flex: 2}}>Cell Id: {this._containerId}</Text
-                </View>);
-    }
+  let pic = {
+    uri: 'https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+  };
+  constructor(args) {
+      super(args);
+      this._containerId = containerCount++;
+  }
+  render() {
+      return (<View style={{flex:1, flexDirection: 'row'}}{...this.props}>
+                <Image source={pic} style={{flex: 1, resizeMode: 'contain' }}/>
+                <View style={{flex:2, flexDirection: 'column'}}>
+                  <Text style={{flex: 1}}> Charles </Text>
+                  <View style={{flex:3}}> {this.props.children} </View>
+                </View>
+              </View>);
+  }
 }
 
 /***
