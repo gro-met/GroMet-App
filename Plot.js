@@ -21,6 +21,9 @@ class PlantContainer extends React.Component {
   let pic = {
     uri: 'https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
   };
+  let plot = {
+    uri: 'https://www.skillsyouneed.com/images/cartesian-graph.png'
+  };
   constructor(args) {
       super(args);
       this._containerId = containerCount++;
@@ -30,7 +33,8 @@ class PlantContainer extends React.Component {
                 <Image source={pic} style={{flex: 1, resizeMode: 'contain' }}/>
                 <View style={{flex:2, flexDirection: 'column'}}>
                   <Text style={{flex: 1}}> Charles </Text>
-                  <View style={{flex:3}}> {this.props.children} </View>
+                  <Image source={plot} style={{flex: 1, resizeMode: 'contain' }}/>
+                  // <View style={{flex:3}}> {this.props.children} </View>
                 </View>
               </View>);
   }
@@ -39,7 +43,7 @@ class PlantContainer extends React.Component {
 /***
  * To use, move this into root component
  */
-export default class RecycleTestComponent extends React.Component {
+export default class PlotView extends React.Component {
     constructor(args) {
         super(args);
 
