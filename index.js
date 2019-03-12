@@ -5,7 +5,7 @@
 
 import {AppRegistry} from 'react-native';
 import App from './App';
-import PlotPage from './Plot'
+import PlotPage from './PlotPage'
 import {name as appName} from './app.json';
 
 AppRegistry.registerComponent(appName, () => PlotPage);
