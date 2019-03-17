@@ -8,4 +8,4 @@ import App from './App';
 import PlotPage from './PlotPage'
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => PlotPage);
+AppRegistry.registerComponent(appName, () => App);
