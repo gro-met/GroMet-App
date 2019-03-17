@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 import React, {Component} from "react";
 import {Text, View,Image} from "react-native";
 export default class PlotCard extends Component {
