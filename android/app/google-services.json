@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "539802681511",
+    "firebase_url": "https://gromet-a0b7d.firebaseio.com",
+    "project_id": "gromet-a0b7d",
+    "storage_bucket": "gromet-a0b7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539802681511:android:c2bc1c773c5a6f58",
+        "android_client_info": {
+          "package_name": "com.gromet.gromet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539802681511-o71gspb8086h5qo3ip7vr596qcb1s5ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfmfeNxC_zPE7hBPEpyee9r1_QMJxQyas"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
