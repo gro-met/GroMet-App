@@ -50,7 +50,7 @@ export default class PlotPage extends Component {
     render() {
         return <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Travel Mate</Text>
+                <Text style={styles.headerText}>GroMet Plant Monitoring System</Text>
             </View>
             <RecyclerListView rowRenderer={this._renderRow} dataProvider={this.state.dataProvider}
                               layoutProvider={this._layoutProvider}/>

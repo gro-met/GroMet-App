@@ -7,6 +7,7 @@
     "ios": "react-native run-ios"
   },
   "dependencies": {
+    "firebase": "^5.9.0",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "recyclerlistview": "^1.3.4"
