@@ -4,7 +4,7 @@ export default class PlotCard extends Component {
   render() {
     return(
       <View  style={styles.outerContainer}>
-        <Image style={styles.image} source={this.props.data.img}/>
+        <Image style={styles.image} source={{ uri: this.props.data.img }}/>
         <View style={styles.container}>
           <Text style={styles.plantName}>{this.props.data.name}</Text>
           <Text>Plot goes here!!!</Text>
