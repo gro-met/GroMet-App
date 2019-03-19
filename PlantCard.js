@@ -20,7 +20,7 @@ export default class PlotCard extends Component {
       alignItems:'stretch'
     },
     container: {
-      flex: 1,
+      flex: 3,
       justifyContent: 'space-between',
       backgroundColor: "white",
       alignItems:"center",
@@ -32,8 +32,7 @@ export default class PlotCard extends Component {
       fontSize:16,
     },
     image: {
-      height: 50,
-      width: 50,
+      flex: 1,
       marginRight: 16,
     },
     line: {
