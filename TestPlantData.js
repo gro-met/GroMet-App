@@ -10,6 +10,7 @@ let Header = [ // TODO: Include header ?? --healym
 
 let PlantData = [
     {
+      id: 'test0',
       type: 'PLANT_ITEM',
       img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png",
       name: "Charles",
@@ -20,6 +21,7 @@ let PlantData = [
       }
     },
     {
+      id: 'test1',
       type: 'PLANT_ITEM',
       img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png",
       name: "Caleb",
