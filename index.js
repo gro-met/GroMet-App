@@ -20,4 +20,4 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 
-AppRegistry.registerComponent(appName, () => PlotPage);
+AppRegistry.registerComponent(appName, () => App);
