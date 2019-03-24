@@ -1,84 +1,56 @@
 import React, {Component} from "react";
-import {RecyclerListView, LayoutProvider, DataProvider} from "recyclerlistview";
-import {View, Dimensions, Text, Image} from "react-native";
+import { View, FlatList, List, Text, Image, StyleSheet } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import PlantCard from "./PlantCard";
 import PlantData from "./TestPlantData"
-let {height, width} = Dimensions.get('window');
-export default class PlotPage extends Component {
-    constructor(args) {
-        super(args);
-        this.state = {
-            dataProvider: new DataProvider((r1, r2) => {
-                return r1 !== r2
-            }).cloneWithRows(PlantData)
-        };
-        this._layoutProvider = new LayoutProvider((i) => {
-            return this.state.dataProvider.getDataForIndex(i).type;
-        }, (type, dim) => {
-            switch (type) {
-                case "PLANT_ITEM":
-                    dim.width = width;
-                    dim.height = 80;
-                    break;
-                case "HEADER": // TODO: Not yet implemented --healym
-                    dim.width = width;
-                    dim.height = 300;
-                    break;
-                default:
-                    dim.width = width;
-                    dim.height = 0;
 
-            }
-        });
-        this._renderRow = this._renderRow.bind(this);
-    }
+class PlotPage extends Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      loading: false,
+      data: PlantData,
+      page: 1,
+      seed: 1,
+      error: null,
+      refreshing: false,
+    };
+  }
 
-    _renderRow(type, data) {
-        switch (type) {
-            case "PLANT_ITEM":
-                return <PlantCard data={data}/>;
-            case "HEADER": // TODO: not yet implemented -- healym
-                // return <TopWidget data={data}/>;
-            default:
-                return null;
-
-        }
-
-    }
-
-    render() {
-        return <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>GroMet Plant Monitoring System</Text>
-            </View>
-            <RecyclerListView rowRenderer={this._renderRow} dataProvider={this.state.dataProvider}
-                              layoutProvider={this._layoutProvider}/>
-        </View>
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.data}
+          extraData={this.props}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              roundAvatar
+              title={`${item.name} (${item.species})`}
+              subtitle={`Humidity: ${item.latest_hum}\nLight Exposure: ${item.latest_light}`}
+              leftAvatar={{ source: { uri: item.img } }}
+              topDivider={true}
+              bottomDivider={false}
+            />
+          )}
+        />
+      </View>
+    );
+  }
 }
-const styles = {
-    container: {
-        flex: 1,
 
-    },
-    header:{
-        height: 65,
-        backgroundColor:'green',
-        alignItems:"center",
-        flexDirection:"row",
-        elevation:4
-    },
-    headerText:{
-        color:'white',
-        fontSize:18,
-        marginLeft: 16,
-        paddingBottom:3
-    },
-    backIcon:{
-        height:23,
-        width:23,
-        marginLeft:16
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
 
-    }
-}
+export default PlotPage;
