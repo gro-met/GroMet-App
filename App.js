@@ -1,41 +1,159 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
+import React, {Component} from "react";
+import { View, FlatList, List, Text, Image, StyleSheet } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import PlantCard from "./PlantCard";
+// import PlantData from './PlantData';
+const { Map } = require('immutable');
+import firebase from 'firebase';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+var firebaseConfig = {
+  apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
+  authDomain: "gromet-a0b7d.firebaseapp.com",
+  databaseURL: "https://gromet-a0b7d.firebaseio.com",
+  projectId: "gromet-a0b7d",
+  storageBucket: "gromet-a0b7d.appspot.com",
+  messagingSenderId: "539802681511"
+};
+firebase.initializeApp(firebaseConfig);
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+var PlantData = [
+    {
+      id: 'test0',
+      img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png",
+      name: "Loading",
+      species: "...",
+      data: {
+        latest_hum: 0,
+        latest_light: 0,
+        hum: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        light: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      }
+    }];
 
-class Plant extends Component {
-  render() {
-    return (
-      <View style={{alignItems: 'center'}}>
-        <Text>Your plant: {this.props.name}!</Text>
-      </View>
-    )
+(function initUserData() {
+  console.log('run readUserData');
+  var info;
+  var plants;
+  firebase.database().ref('info/').on('value', (snapshot) => {
+    info = snapshot.val();
+    console.log('run info update');
+  });
+  firebase.database().ref('plants/').on('value', (snapshot) => {
+    console.log('run plant update');
+    var newPlantData = [];
+    plants = snapshot.val()
+    for (let plantID in plants) {
+      var plant = {};
+      plant.id = plantID;
+      plant.img = 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png';
+      plant.name = info[plantID]['name'];
+      plant.species = info[plantID]['species'];
+      var hum_array = [];
+      var light_array = [];
+      for (let instance in plants[plantID]) {
+        hum_array.push(plants[plantID][instance]['hum']);
+        light_array.push(plants[plantID][instance]['light']);
+      }
+      var data = {};
+      data.latest_hum = plants[plantID]['latest']['hum'];
+      data.latest_light = plants[plantID]['latest']['light'];
+      data.hum = hum_array;
+      data.light = light_array;
+      plant.data = data;
+      newPlantData.push(plant)
+    }
+    PlantData = newPlantData;
+    console.log(PlantData);
+  });
+  console.log(PlantData);
+})();
+
+(function updateUserData() {
+  console.log('run readUserData');
+  var info;
+  var plants;
+  firebase.database().ref('info/').on('value', (snapshot) => {
+    info = snapshot.val();
+    console.log('run info update');
+  });
+  firebase.database().ref('plants/').on('value', (snapshot) => {
+    console.log('run plant update');
+    var newPlantData = [];
+    plants = snapshot.val()
+    for (let plantID in plants) {
+      var plant = {};
+      plant.id = plantID;
+      plant.img = 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png';
+      plant.name = info[plantID]['name'];
+      plant.species = info[plantID]['species'];
+      var hum_array = [];
+      var light_array = [];
+      for (let instance in plants[plantID]) {
+        hum_array.push(plants[plantID][instance]['hum']);
+        light_array.push(plants[plantID][instance]['light']);
+      }
+      var data = {};
+      data.latest_hum = plants[plantID]['latest']['hum'];
+      data.latest_light = plants[plantID]['latest']['light'];
+      data.hum = hum_array;
+      data.light = light_array;
+      plant.data = data;
+      newPlantData.push(plant)
+    }
+    PlantData = newPlantData;
+    console.log(PlantData);
+  });
+  console.log(PlantData);
+})();
+
+
+class PlotPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      data: PlantData,
+      page: 1,
+      seed: 1,
+      error: null,
+      refreshing: false,
+    };
   }
-}
 
-type Props = {};
-export default class App extends Component<Props> {
+  onRefresh() {
+    this.setState({
+      refreshing: true,
+      data: PlantData
+    });
+    this.setState({
+      refreshing: false
+    });
+    console.log(PlantData);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to GroMet!</Text>
-        <Plant name='lily' />
-        <Plant name='orchid' />
-        <Plant name='daisy' />
+        <FlatList
+          onRefresh={this.onRefresh.bind(this)}
+          refreshing={this.state.refreshing}
+          data={this.state.data}
+          extraData={Map({
+            plants: this.props.data
+          })}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              roundAvatar
+              title={`${item.name} (${item.species})`}
+              subtitle={`Humidity: ${item.latest_hum}\nLight Exposure: ${item.latest_light}`}
+              leftAvatar={{ source: { uri: item.img } }}
+              topDivider={true}
+              bottomDivider={false}
+            />
+          )}
+        />
       </View>
     );
   }
@@ -43,25 +161,14 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+   flex: 1,
+   paddingTop: 22
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  plants: {
-    textAlign: 'center',
+  item: {
+    padding: 10,
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#006622',
-  }
-});
+    height: 44,
+  },
+})
+
+export default App;
