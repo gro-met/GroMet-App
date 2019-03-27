@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 const { Map } = require('immutable');
 import firebase from 'firebase';
@@ -14,12 +14,12 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-var PlantData = [
+var PlantData = [ // default data to display
     {
       id: 'test0',
       img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png",
-      name: "Loading",
-      species: "...",
+      name: "Loading...",
+      species: "",
       data: {
         latest_hum: 0,
         latest_light: 0,
@@ -28,6 +28,120 @@ var PlantData = [
       }
     }];
 
+
+class MainPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      data: PlantData,
+      page: 1,
+      seed: 1,
+      error: null,
+      refreshing: false,
+      selected: (new Map(): Map<string, boolean>),
+    };
+
+    // update once
+    setTimeout(() => {
+      this.setState({
+        refreshing: true,
+        data: PlantData
+      });
+      this.setState({
+        refreshing: false
+      });
+      console.log(PlantData);
+    }, 500);
+  }
+
+  onRefresh() {
+    this.setState({
+      refreshing: true,
+      data: PlantData
+    });
+    this.setState({
+      refreshing: false
+    });
+    console.log(PlantData);
+  }
+
+  _onPressItem = (id: string) => {
+    // updater functions are preferred for transactional updates
+    this.setState((state) => {
+      // copy the map rather than modifying state.
+      const selected = new Map(state.selected);
+      selected.set(id, !selected.get(id)); // toggle
+      console.log(id);
+      return {selected};
+    });
+  };
+
+  _renderItem = ({item}) => (
+    <ListItem
+      button onPress={() => {
+        Alert.alert(
+          'Details',
+          'Presumably, we can put the plot here',
+          [
+            {text: 'Print index', onPress: () => console.log(item)},
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        );
+      }}
+      button onLongPress={() => {
+        Alert.alert(
+          'Long Press!',
+          'Presumably, we can put the edit page here',
+          [
+            {text: 'Print index', onPress: () => console.log(item)},
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        );
+      }}
+      roundAvatar
+      selected={!!this.state.selected.get(item.id)}
+      title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
+      subtitle={`Humidity: ${item.latest_hum}\nLight Exposure: ${item.latest_light}`}
+      leftAvatar={{ source: { uri: item.img } }}
+      topDivider={true}
+      bottomDivider={false}
+    />
+  );
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          onPressItem={this._onPressItem}
+          onRefresh={this.onRefresh.bind(this)}
+          refreshing={this.state.refreshing}
+          data={this.state.data}
+          extraData={Map({
+            plants: this.props.data
+          })}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={this._renderItem}
+        />
+      </View>
+    );
+  }
+}
+
+////////////////////////// FIREBASE UPDATING ///////////////////////////////////
 (function initUserData() {
   console.log('run readUserData');
   var info;
@@ -103,59 +217,7 @@ var PlantData = [
   });
   console.log(PlantData);
 })();
-
-
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      data: PlantData,
-      page: 1,
-      seed: 1,
-      error: null,
-      refreshing: false,
-    };
-  }
-
-  onRefresh() {
-    this.setState({
-      refreshing: true,
-      data: PlantData
-    });
-    this.setState({
-      refreshing: false
-    });
-    console.log(PlantData);
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          onRefresh={this.onRefresh.bind(this)}
-          refreshing={this.state.refreshing}
-          data={this.state.data}
-          extraData={Map({
-            plants: this.props.data
-          })}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              roundAvatar
-              title={`${item.name} (${item.species})`}
-              subtitle={`Humidity: ${item.latest_hum}\nLight Exposure: ${item.latest_light}`}
-              leftAvatar={{ source: { uri: item.img } }}
-              topDivider={true}
-              bottomDivider={false}
-            />
-          )}
-        />
-      </View>
-    );
-  }
-}
+////////////////////////// END FIREBASE CODE ///////////////////////////////////
 
 const styles = StyleSheet.create({
   container: {
