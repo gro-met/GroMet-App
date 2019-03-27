@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import { View, FlatList, List, Text, Image, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import PlantCard from "./PlantCard";
-// import PlantData from './PlantData';
 const { Map } = require('immutable');
 import firebase from 'firebase';
 
@@ -107,7 +105,7 @@ var PlantData = [
 })();
 
 
-class PlotPage extends Component {
+class MainPage extends Component {
   constructor(props) {
     super(props);
 
@@ -171,4 +169,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default App;
+export default MainPage;
