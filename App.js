@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert, StatusBar } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 const { Map } = require('immutable');
 import firebase from 'firebase';
+import DetailsScreen from './DetailsScreen';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -16,8 +18,8 @@ firebase.initializeApp(firebaseConfig);
 
 var PlantData = [ // default data to display
     {
-      id: 'test0',
-      img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png",
+      id: 'loading',
+      img: '',
       name: "Loading...",
       species: "",
       data: {
@@ -29,7 +31,19 @@ var PlantData = [ // default data to display
     }];
 
 
+
+
 class MainPage extends Component {
+  static navigationOptions = {
+    title: 'Plants',
+    headerStyle: {
+      backgroundColor: '#43a047',
+    },
+    headerTintColor: '#000',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
   constructor(props) {
     super(props);
 
@@ -53,7 +67,7 @@ class MainPage extends Component {
         refreshing: false
       });
       console.log(PlantData);
-    }, 500);
+    }, 1000);
   }
 
   onRefresh() {
@@ -80,22 +94,7 @@ class MainPage extends Component {
 
   _renderItem = ({item}) => (
     <ListItem
-      button onPress={() => {
-        Alert.alert(
-          'Details',
-          'Presumably, we can put the plot here',
-          [
-            {text: 'Print index', onPress: () => console.log(item)},
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          {cancelable: false},
-        );
-      }}
+      button onPress={() => this.props.navigation.navigate('Details', {data: item.data, title: item.name})}
       button onLongPress={() => {
         Alert.alert(
           'Long Press!',
@@ -115,7 +114,7 @@ class MainPage extends Component {
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
-      subtitle={`Humidity: ${item.latest_hum}\nLight Exposure: ${item.latest_light}`}
+      subtitle={`Humidity: ${item.data.latest_hum}\nLight Exposure: ${item.data.latest_light}`}
       leftAvatar={{ source: { uri: item.img } }}
       topDivider={true}
       bottomDivider={false}
@@ -125,6 +124,10 @@ class MainPage extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar
+            barStyle="light-content"
+            backgroundColor="#00701a"
+          />
         <FlatList
           onPressItem={this._onPressItem}
           onRefresh={this.onRefresh.bind(this)}
@@ -157,7 +160,7 @@ class MainPage extends Component {
     for (let plantID in plants) {
       var plant = {};
       plant.id = plantID;
-      plant.img = 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png';
+      plant.img = info[plantID]['img'];
       plant.name = info[plantID]['name'];
       plant.species = info[plantID]['species'];
       var hum_array = [];
@@ -165,6 +168,16 @@ class MainPage extends Component {
       for (let instance in plants[plantID]) {
         hum_array.push(plants[plantID][instance]['hum']);
         light_array.push(plants[plantID][instance]['light']);
+      }
+      if (light_array.length > 10) {
+        for (i=0; i < light_array.length - 10; i++) {
+          light_array.shift(); // remove front
+        }
+      }
+      if (light_array.length < 10) {
+        for (i=0; i < 10 - light_array.length; i++) {
+          light_array.unshift(0); // prepend 0
+        }
       }
       var data = {};
       data.latest_hum = plants[plantID]['latest']['hum'];
@@ -195,7 +208,7 @@ class MainPage extends Component {
     for (let plantID in plants) {
       var plant = {};
       plant.id = plantID;
-      plant.img = 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Green_circle.png';
+      plant.img = info[plantID]['img'];
       plant.name = info[plantID]['name'];
       plant.species = info[plantID]['species'];
       var hum_array = [];
@@ -231,4 +244,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MainPage;
+const AppNavigator = createStackNavigator(
+  {
+  Home: MainPage,
+  Details: DetailsScreen,
+  },
+  {
+    initialRouteName: "Home"
+  });
+
+export default createAppContainer(AppNavigator);
