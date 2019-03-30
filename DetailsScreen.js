@@ -43,14 +43,19 @@ export default class DetailsScreen extends React.Component {
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Emoji name='droplet' style={{flex: 2, fontSize: 50}}/>
             <View style={{ flex: 7, flexDirection: 'column' }} >
+              <YAxis
+                  data={data.hum}
+                  style={{ marginBottom: 30 }}
+                  contentInset={top: 30}
+                  svg={{ fontSize: 10, fill: 'grey' }}
+              />
               <LineChart
                       style={{ flex: 4 }}
                       gridMin={ -10 }
-                      data={ data.light }
+                      data={ data.hum }
                       contentInset={{ top: 30, left: 10, right: 10 }}
                       svg={{ stroke: '#2196f3' }}
                   >
-                  <Grid/>
               </LineChart>
               <XAxis
                   style={{ height: 30, flex: 1 }}
@@ -64,6 +69,12 @@ export default class DetailsScreen extends React.Component {
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Emoji name='sunny' style={{flex:2, fontSize: 50}}/>
           <View style={{ flex: 7, flexDirection: 'column' }} >
+            <YAxis
+                data={data.light}
+                style={{ marginBottom: 30 }}
+                contentInset={top: 30}
+                svg={{ fontSize: 10, fill: 'grey' }}
+            />
             <LineChart
                     style={{ flex: 4 }}
                     gridMin={ -10 }
@@ -71,7 +82,6 @@ export default class DetailsScreen extends React.Component {
                     contentInset={{ top: 30, left: 10, right: 10 }}
                     svg={{ stroke: '#fdd835' }}
                 >
-                <Grid/>
             </LineChart>
             <XAxis
                 style={{ flex: 1, height: 30 }}
