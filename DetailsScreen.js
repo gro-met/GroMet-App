@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { LineChart, Grid, XAxis } from 'react-native-svg-charts'
+import { LineChart, Grid, XAxis, YAxis } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Emoji from 'react-native-emoji';
