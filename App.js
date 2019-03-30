@@ -66,7 +66,6 @@ class MainPage extends Component {
       this.setState({
         refreshing: false
       });
-      console.log(PlantData);
     }, 1000);
   }
 
@@ -78,7 +77,6 @@ class MainPage extends Component {
     this.setState({
       refreshing: false
     });
-    console.log(PlantData);
   }
 
   _onPressItem = (id: string) => {
@@ -87,26 +85,23 @@ class MainPage extends Component {
       // copy the map rather than modifying state.
       const selected = new Map(state.selected);
       selected.set(id, !selected.get(id)); // toggle
-      console.log(id);
       return {selected};
     });
   };
 
   _renderItem = ({item}) => (
     <ListItem
-      button onPress={() => this.props.navigation.navigate('Details', {data: item.data, title: item.name})}
+      button onPress={() => this.props.navigation.navigate('Details',
+          {data: item.data, title: item.name, img: item.img})}
       button onLongPress={() => {
         Alert.alert(
           'Long Press!',
           'Presumably, we can put the edit page here',
           [
-            {text: 'Print index', onPress: () => console.log(item)},
             {
               text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
           ],
           {cancelable: false},
         );
@@ -146,15 +141,12 @@ class MainPage extends Component {
 
 ////////////////////////// FIREBASE UPDATING ///////////////////////////////////
 (function initUserData() {
-  console.log('run readUserData');
   var info;
   var plants;
   firebase.database().ref('info/').on('value', (snapshot) => {
     info = snapshot.val();
-    console.log('run info update');
   });
   firebase.database().ref('plants/').on('value', (snapshot) => {
-    console.log('run plant update');
     var newPlantData = [];
     plants = snapshot.val()
     for (let plantID in plants) {
@@ -169,40 +161,42 @@ class MainPage extends Component {
         hum_array.push(plants[plantID][instance]['hum']);
         light_array.push(plants[plantID][instance]['light']);
       }
-      if (light_array.length > 10) {
-        for (i=0; i < light_array.length - 10; i++) {
-          light_array.shift(); // remove front
-        }
-      }
-      if (light_array.length < 10) {
-        for (i=0; i < 10 - light_array.length; i++) {
-          light_array.unshift(0); // prepend 0
-        }
-      }
       var data = {};
+      if (light_array.length > 10) {
+        data.light = light_array.slice(1).slice(-10);
+      } else if (light_array.length < 10) {
+        (arr = []).length = 10 - light_array.length;
+        arr.fill(0);
+        data.light = arr.concat(light_array);
+      } else {
+        data.light = light_array;
+      }
+      if (hum_array.length > 10) {
+        data.hum = hum_array.slice(1).slice(-10);
+      } else if (hum_array.length < 10) {
+        (arr = []).length = 10 - hum_array.length;
+        arr.fill(0);
+        data.hum = arr.concat(hum_array);
+      } else {
+        data.hum = hum_array;
+      }
       data.latest_hum = plants[plantID]['latest']['hum'];
       data.latest_light = plants[plantID]['latest']['light'];
-      data.hum = hum_array;
-      data.light = light_array;
       plant.data = data;
       newPlantData.push(plant)
     }
     PlantData = newPlantData;
     console.log(PlantData);
   });
-  console.log(PlantData);
 })();
 
 (function updateUserData() {
-  console.log('run readUserData');
   var info;
   var plants;
   firebase.database().ref('info/').on('value', (snapshot) => {
     info = snapshot.val();
-    console.log('run info update');
   });
   firebase.database().ref('plants/').on('value', (snapshot) => {
-    console.log('run plant update');
     var newPlantData = [];
     plants = snapshot.val()
     for (let plantID in plants) {
@@ -218,17 +212,32 @@ class MainPage extends Component {
         light_array.push(plants[plantID][instance]['light']);
       }
       var data = {};
+      if (light_array.length > 10) {
+        data.light = light_array.slice(1).slice(-10);
+      } else if (light_array.length < 10) {
+        (arr = []).length = 10 - light_array.length;
+        arr.fill(0);
+        data.light = arr.concat(light_array);
+      } else {
+        data.light = light_array;
+      }
+      if (hum_array.length > 10) {
+        data.hum = hum_array.slice(1).slice(-10);
+      } else if (hum_array.length < 10) {
+        (arr = []).length = 10 - hum_array.length;
+        arr.fill(0);
+        data.hum = arr.concat(hum_array);
+      } else {
+        data.hum = hum_array;
+      }
       data.latest_hum = plants[plantID]['latest']['hum'];
       data.latest_light = plants[plantID]['latest']['light'];
-      data.hum = hum_array;
-      data.light = light_array;
       plant.data = data;
       newPlantData.push(plant)
     }
     PlantData = newPlantData;
     console.log(PlantData);
   });
-  console.log(PlantData);
 })();
 ////////////////////////// END FIREBASE CODE ///////////////////////////////////
 
