@@ -42,13 +42,16 @@ export default class DetailsScreen extends React.Component {
         </View>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Emoji name='droplet' style={{flex: 2, fontSize: 50}}/>
-            <View style={{ flex: 7, flexDirection: 'column' }} >
+            <View style={{ flex: 1, flexDirection: 'column' }} >
               <YAxis
                   data={data.hum}
-                  style={{ marginBottom: 30 }}
+                  style={{ flex: 4, marginBottom: 10 }}
                   contentInset={{ top: 30 }}
                   svg={{ fontSize: 10, fill: 'grey' }}
               />
+              <View style={{ flex: 1, height: 30 }} />
+            </View>
+            <View style={{ flex: 7, flexDirection: 'column' }} >
               <LineChart
                       style={{ flex: 4 }}
                       gridMin={ -10 }
@@ -58,7 +61,7 @@ export default class DetailsScreen extends React.Component {
                   >
               </LineChart>
               <XAxis
-                  style={{ height: 30, flex: 1 }}
+                  style={{ flex: 1 }}
                   data={ data.hum }
                   contentInset={{ left: 10, right: 10 }}
                   formatLabel={ (value, index) => index }
@@ -68,13 +71,16 @@ export default class DetailsScreen extends React.Component {
         </View>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Emoji name='sunny' style={{flex:2, fontSize: 50}}/>
-          <View style={{ flex: 7, flexDirection: 'column' }} >
+          <View style={{ flex: 1, flexDirection: 'column' }} >
             <YAxis
                 data={data.light}
-                style={{ marginBottom: 30 }}
+                style={{ flex: 4, marginBottom: 10 }}
                 contentInset={{ top: 30 }}
                 svg={{ fontSize: 10, fill: 'grey' }}
             />
+            <View style={{ flex: 1, height: 30 }} />
+          </View>
+          <View style={{ flex: 7, flexDirection: 'column' }} >
             <LineChart
                     style={{ flex: 4 }}
                     gridMin={ -10 }
