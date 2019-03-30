@@ -46,7 +46,7 @@ export default class DetailsScreen extends React.Component {
               <YAxis
                   data={data.hum}
                   style={{ marginBottom: 30 }}
-                  contentInset={top: 30}
+                  contentInset={{ top: 30 }}
                   svg={{ fontSize: 10, fill: 'grey' }}
               />
               <LineChart
@@ -72,7 +72,7 @@ export default class DetailsScreen extends React.Component {
             <YAxis
                 data={data.light}
                 style={{ marginBottom: 30 }}
-                contentInset={top: 30}
+                contentInset={{ top: 30 }}
                 svg={{ fontSize: 10, fill: 'grey' }}
             />
             <LineChart
