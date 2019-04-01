@@ -3,6 +3,7 @@ import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert 
 import { ListItem } from 'react-native-elements';
 const { Map } = require('immutable');
 import firebase from 'firebase';
+import EditScreen from './EditScreen';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -96,22 +97,9 @@ class MainPage extends Component {
           {cancelable: false},
         );
       }}
-      button onLongPress={() => {
-        Alert.alert(
-          'Long Press!',
-          'Presumably, we can put the edit page here',
-          [
-            {text: 'Print index', onPress: () => console.log(item)},
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          {cancelable: false},
-        );
-      }}
+      button onLongPress={() =>
+      this.props.navigation.navigate('Edit',
+                {data: item.data, title: item.name, img: item.img})}}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
@@ -231,4 +219,14 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MainPage;
+
+const AppNavigator = createStackNavigator(
+  {
+  Home: MainPage,
+  Edit: EditScreen,
+  },
+  {
+    initialRouteName: "Home"
+  });
+
+  export default createAppContainer(AppNavigator);
