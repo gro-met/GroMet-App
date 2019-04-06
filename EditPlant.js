@@ -16,11 +16,11 @@ export default class EditPlant extends React.Component {
       this.setState({ newSpecies: text })
   }
   changeInfo = (newName, newSpecies) => {
-    key = navigation.getParam('key', 'Infos')
-    firebase.database().ref('/info' + key).set({
-      name: newName,
-      species: newSpecies
-    });
+    // key = navigation.getParam('key', 'Infos')
+    // firebase.database().ref('/info' + key).set({
+    //   name: newName,
+    //   species: newSpecies
+    // });
     Alert.alert(
       'Plant Data Changed',
       'newName Changed to: ' + newName + '\nSpecies Changed to: ' + newSpecies,
