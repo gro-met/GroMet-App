@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 const { Map } = require('immutable');
 import firebase from 'firebase';
 import DetailsScreen from './DetailsScreen';
+import EditPlant from './EditPlant';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -93,19 +94,8 @@ class MainPage extends Component {
     <ListItem
       button onPress={() => this.props.navigation.navigate('Details',
           {data: item.data, title: item.name, img: item.img})}
-      button onLongPress={() => {
-        Alert.alert(
-          'Long Press!',
-          'Presumably, we can put the edit page here',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-          ],
-          {cancelable: false},
-        );
-      }}
+      button onLongPress={() => this.props.navigation.navigate('Edit',
+          {data: item.data, title: item.name, img: item.img})}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
@@ -257,6 +247,7 @@ const AppNavigator = createStackNavigator(
   {
   Home: MainPage,
   Details: DetailsScreen,
+  Edit: EditPlant,
   },
   {
     initialRouteName: "Home"
