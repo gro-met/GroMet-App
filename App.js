@@ -95,7 +95,7 @@ class MainPage extends Component {
       button onPress={() => this.props.navigation.navigate('Details',
           {data: item.data, title: item.name, img: item.img})}
       button onLongPress={() => this.props.navigation.navigate('Edit',
-          {data: item.data, title: item.name, img: item.img})}
+          {key: item, data: item.data, title: item.name, img: item.img})}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
