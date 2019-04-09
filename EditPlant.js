@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert, Picker } from 'react-native';
 import { ListItem } from 'react-native-elements';
 const { Map } = require('immutable');
 import firebase from 'firebase';
@@ -63,12 +63,18 @@ export default class EditPlant extends React.Component {
                autoCapitalize = "none"
                onChangeText = {this.handleName}/>
             
-            <TextInput style = {styles.input}
+            <Picker selectedValue = {this.state.newSpecies} onValueChange = {this.handleSpecies}>
+              <Picker.Item label = "Rose" value = "rose" />
+              <Picker.Item label = "Cactus" value = "cactus" />
+              <Picker.Item label = "Daffodil" value = "daffodil" />
+            </Picker>
+
+            {/* <TextInput style = {styles.input}
                underlineColorAndroid = "transparent"
                placeholder = "Species"
                placeholderTextColor = "#13771b"
                autoCapitalize = "none"
-               onChangeText = {this.handleSpecies}/>
+               onChangeText = {this.handleSpecies}/> */}
             
             <TouchableOpacity
                style = {styles.submitButton}
