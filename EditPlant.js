@@ -63,11 +63,16 @@ export default class EditPlant extends React.Component {
                autoCapitalize = "none"
                onChangeText = {this.handleName}/>
             
-            <Picker selectedValue = {this.state.newSpecies} onValueChange = {this.handleSpecies}>
+            <Picker
+              style = {styles.input}
+              selectedValue = {this.state.newSpecies}
+              onValueChange = {this.handleSpecies} >
+
               <Picker.Item label = "Rose" value = "rose" />
               <Picker.Item label = "Cactus" value = "cactus" />
               <Picker.Item label = "Daffodil" value = "daffodil" />
             </Picker>
+            <Text style = {styles.input}> {this.state.newSpecies} </Text>
 
             {/* <TextInput style = {styles.input}
                underlineColorAndroid = "transparent"
