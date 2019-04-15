@@ -64,6 +64,7 @@ export default class EditPlant extends React.Component {
     
     return(
       <View style = {styles.container}>
+<<<<<<< HEAD
         <Text>    Edit Plant Data</Text>
         <TextInput style = {styles.input}
             underlineColorAndroid = "transparent"
@@ -92,6 +93,42 @@ export default class EditPlant extends React.Component {
             <Text style = {styles.submitButtonText}> Submit Changes </Text>
         </TouchableOpacity>
       </View>
+=======
+            <Text>    Edit Plant Data</Text>  
+            <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Name"
+               placeholderTextColor = "#13771b"
+               autoCapitalize = "none"
+               onChangeText = {this.handleName}/>
+            
+            <Picker
+              style = {styles.input}
+              selectedValue = {this.state.newSpecies}
+              onValueChange = {this.handleSpecies} >
+
+              <Picker.Item label = "Rose" value = "rose" />
+              <Picker.Item label = "Cactus" value = "cactus" />
+              <Picker.Item label = "Daffodil" value = "daffodil" />
+            </Picker>
+            <Text style = {styles.input}> {this.state.newSpecies} </Text>
+
+            {/* <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Species"
+               placeholderTextColor = "#13771b"
+               autoCapitalize = "none"
+               onChangeText = {this.handleSpecies}/> */}
+            
+            <TouchableOpacity
+               style = {styles.submitButton}
+               onPress = {
+                () => this.changeInfo(this.state.newName, this.state.newSpecies)  
+               }>
+               <Text style = {styles.submitButtonText}> Submit Changes </Text>
+            </TouchableOpacity>
+         </View>
+>>>>>>> a5141301aa53caa8b61974c675f798b3abf3e3a4
     );
   }
 }
