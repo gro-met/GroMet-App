@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert, Picker } from 'react-native';
 import { ListItem } from 'react-native-elements';
 const { Map } = require('immutable');
 import firebase from 'firebase';
+import ModalSelector from 'react-native-modal-selector';
 
 export default class EditPlant extends React.Component {
   state = {
@@ -11,9 +12,6 @@ export default class EditPlant extends React.Component {
   }
   handleName = (text) => {
       this.setState({ newName: text })
-  }
-  handleSpecies = (text) => {
-      this.setState({ newSpecies: text })
   }
   changeInfo = (newName, newSpecies) => {
     key = this.props.navigation.getParam('key', 'Info')
@@ -45,32 +43,48 @@ export default class EditPlant extends React.Component {
   };
   render(){
     const { navigation } = this.props;
+    let index = 0;
+    const data = [
+      { key: index++, label: "African violet" },
+      { key: index++, label: "Cactus" },
+      { key: index++, label: "Daffodil" },
+      { key: index++, label: "Orchid" },
+      { key: index++, label: "Rose" },
+      { key: index++, label: "Succulent" },
+      { key: index++, label: "Spider plant" },
+      { key: index++, label: "Wandering jew" },
+    ]
     
     return(
       <View style = {styles.container}>
-            <Text>    Edit Plant Data</Text>  
-            <TextInput style = {styles.input}
-               underlineColorAndroid = "transparent"
-               placeholder = "Name"
-               placeholderTextColor = "#13771b"
-               autoCapitalize = "none"
-               onChangeText = {this.handleName}/>
-            
-            <TextInput style = {styles.input}
-               underlineColorAndroid = "transparent"
-               placeholder = "Species"
-               placeholderTextColor = "#13771b"
-               autoCapitalize = "none"
-               onChangeText = {this.handleSpecies}/>
-            
-            <TouchableOpacity
-               style = {styles.submitButton}
-               onPress = {
-                () => this.changeInfo(this.state.newName, this.state.newSpecies)  
-               }>
-               <Text style = {styles.submitButtonText}> Submit Changes </Text>
-            </TouchableOpacity>
-         </View>
+        <Text>    Edit Plant Data</Text>
+        <TextInput style = {styles.input}
+            underlineColorAndroid = "transparent"
+            placeholder = "Name"
+            placeholderTextColor = "#13771b"
+            autoCapitalize = "none"
+            onChangeText = {this.handleName}/>
+
+        <ModalSelector
+          data={data}
+          initValue="Species"
+          style={styles.input}
+          onChange={(option)=>{ this.setState({newSpecies:option.label}) }}>
+          <TextInput
+            editable={false}
+            placeholder="Species"
+            placeholderTextColor = "#13771b"
+            value={this.state.newSpecies} />
+        </ModalSelector>
+
+        <TouchableOpacity
+            style = {styles.submitButton}
+            onPress = {
+            () => this.changeInfo(this.state.newName, this.state.newSpecies)
+            }>
+            <Text style = {styles.submitButtonText}> Submit Changes </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
