@@ -16,11 +16,11 @@ export default class EditPlant extends React.Component {
       this.setState({ newSpecies: text })
   }
   changeInfo = (newName, newSpecies) => {
-    // key = navigation.getParam('key', 'Infos')
-    // firebase.database().ref('/info' + key).set({
-    //   name: newName,
-    //   species: newSpecies
-    // });
+    key = this.props.navigation.getParam('key', 'Info')
+    firebase.database().ref('/info/' + key.id).update({
+      name: newName,
+      species: newSpecies
+    });
     Alert.alert(
       'Plant Data Changed',
       'newName Changed to: ' + newName + '\nSpecies Changed to: ' + newSpecies,
@@ -30,13 +30,6 @@ export default class EditPlant extends React.Component {
       {cancelable: false},
     );
   }
-  // writePlantData = (newName,newSpecies)=>{
-  //   this.changeInfo(newName, newSpecies)
-  //   firebase.database().ref('/info' + key).set({
-  //     name: newName,
-  //     species: newSpecies
-  //   });
-  // }
 
   static navigationOptions = ({ navigation }) => {
     return {
