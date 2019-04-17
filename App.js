@@ -118,6 +118,7 @@ class MainPage extends Component {
           onRefresh={this.onRefresh.bind(this)}
           refreshing={this.state.refreshing}
           data={this.state.data}
+//          data={this.state.data.sort((a, b) => a.localeCompare(b))}
           extraData={Map({
             plants: this.props.data
           })}
