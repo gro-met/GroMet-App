@@ -91,10 +91,18 @@ class MainPage extends Component {
   };
 
   _renderItem = ({item}) => (
+    /*<TouchableOpacity
+      style={styles.item, {color: getColor(item)}}
+      //style={styles.item, {color: '#43a047'}}
+      activeOpacity={0.4}*/
+ 
+    //<View style={styles.item, {backgroundColor: getColor(item)}}>
+    //<View style={styles.item}>
     <ListItem
-      button onPress={() => this.props.navigation.navigate('Details',
+      containerStyle = {styles.item, {backgroundColor: getColor(item)}}
+      onPress={() => this.props.navigation.navigate('Details',
           {data: item.data, title: item.name, img: item.img})}
-      button onLongPress={() => this.props.navigation.navigate('Edit',
+      onLongPress={() => this.props.navigation.navigate('Edit',
           {key: item, data: item.data, title: item.name, img: item.img})}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
@@ -104,8 +112,9 @@ class MainPage extends Component {
       topDivider={true}
       bottomDivider={false}
     />
+    //</View>
   );
-
+    
   render() {
     return (
       <View style={styles.container}>
@@ -231,15 +240,32 @@ class MainPage extends Component {
 })();
 ////////////////////////// END FIREBASE CODE ///////////////////////////////////
 
+  getColor = (item) => {
+    if (item.data.latest_hum > 50
+        && item.data.latest_light > 75)
+            return '#82e570'
+    else if (item.data.latest_hum > 25
+        && item.data.latest_light > 50)
+            return '#fcff7c'
+    else
+            return '#d6a782'
+  ;}
+
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   paddingTop: 22
+   paddingTop: 22,
   },
   item: {
     padding: 10,
     fontSize: 18,
-    height: 44,
+    height: 76,
+    backgroundColor: 'blue',
+    //color: '#43a047'
+  },
+  button: {
+    backgroundColor: '#43a047',
+    color: '#43a047'
   },
 })
 
