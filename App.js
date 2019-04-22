@@ -91,15 +91,8 @@ class MainPage extends Component {
   };
 
   _renderItem = ({item}) => (
-    /*<TouchableOpacity
-      style={styles.item, {color: getColor(item)}}
-      //style={styles.item, {color: '#43a047'}}
-      activeOpacity={0.4}*/
- 
-    //<View style={styles.item, {backgroundColor: getColor(item)}}>
-    //<View style={styles.item}>
     <ListItem
-      containerStyle = {styles.item, {backgroundColor: getColor(item)}}
+      containerStyle = {styles.item, {backgroundColor: getColor2(getHealth(item))}}
       onPress={() => this.props.navigation.navigate('Details',
           {data: item.data, title: item.name, img: item.img})}
       onLongPress={() => this.props.navigation.navigate('Edit',
@@ -112,7 +105,6 @@ class MainPage extends Component {
       topDivider={true}
       bottomDivider={false}
     />
-    //</View>
   );
     
   render() {
@@ -250,6 +242,56 @@ class MainPage extends Component {
     else
             return '#d6a782'
   ;}
+
+  getHealth = (item) => {
+      return ((item.data.latest_hum + item.data.latest_light) / 2)
+  };
+
+  //function ready for when the health value stuff works
+  getColor2 = (healthValue) => {
+    if (healthValue > 95)
+        return '#43a047'
+    else if (healthValue > 90)
+        return '#4da23a'
+    else if (healthValue > 85)
+        return '#59a537'
+    else if (healthValue > 80)
+        return '#67a834'
+    else if (healthValue > 75)
+        return '#7aad2f'
+    else if (healthValue > 70)
+        return '#8cb12a'
+    else if (healthValue > 65)
+        return '#a1b626'
+    else if (healthValue > 60)
+        return '#babb1f'
+    else if (healthValue > 55)
+        return '#d1c01a'
+    else if (healthValue > 50)
+        return '#e3c415'
+    else if (healthValue > 45)
+        return '#eec713'
+    else if (healthValue > 40)
+        return '#e8c016'
+    else if (healthValue > 35)
+        return '#e0b61c'
+    else if (healthValue > 30)
+        return '#d6ab22'
+    else if (healthValue > 25)
+        return '#cb9e2a'
+    else if (healthValue > 20)
+        return '#c29230'
+    else if (healthValue > 15)
+        return '#b98735'
+    else if (healthValue > 10)
+        return '#b17e3a'
+    else if (healthValue > 5)
+        return '#aa753e'
+    else if (healthValue > 0)
+        return '#a46e42'
+    else
+        return '#a06a45'
+  };
 
 const styles = StyleSheet.create({
   container: {
