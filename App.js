@@ -43,6 +43,7 @@ class MainPage extends Component {
     headerTintColor: '#000',
     headerTitleStyle: {
       fontWeight: 'bold',
+      color: 'white',
     },
   };
   constructor(props) {
@@ -99,11 +100,14 @@ class MainPage extends Component {
           {key: item, data: item.data, title: item.name, img: item.img})}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
+      titleStyle = {styles.title}
+      subtitleStyle = {styles.subTitle}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
       subtitle={`Humidity: ${item.data.latest_hum}\nLight Exposure: ${item.data.latest_light}`}
       leftAvatar={{ source: { uri: item.img } }}
       topDivider={true}
       bottomDivider={false}
+      chevron //style = {color: 'white'}
     />
   );
     
@@ -250,53 +254,53 @@ class MainPage extends Component {
   //function ready for when the health value stuff works
   getColor2 = (healthValue) => {
     if (healthValue > 95)
-        return '#43a047'
+        return '#77ba72'
     else if (healthValue > 90)
-        return '#4da23a'
+        return '#7ebc71'
     else if (healthValue > 85)
-        return '#59a537'
+        return '#87be6f'
     else if (healthValue > 80)
-        return '#67a834'
-    else if (healthValue > 75)
-        return '#7aad2f'
+        return '#91c06c'
+    else if (healthValue > 75)  //5 == 2
+        return '#9fc468'
     else if (healthValue > 70)
-        return '#8cb12a'
+        return '#acc665'
     else if (healthValue > 65)
-        return '#a1b626'
+        return '#bcca61'
     else if (healthValue > 60)
-        return '#babb1f'
+        return '#cdce5c'
     else if (healthValue > 55)
-        return '#d1c01a'
-    else if (healthValue > 50)
-        return '#e3c415'
+        return '#ddd259a'
+    else if (healthValue > 50) //10 == 4.5
+        return '#ebd556'
     else if (healthValue > 45)
-        return '#eec713'
+        return '#f3d654'
     else if (healthValue > 40)
-        return '#e8c016'
+        return '#eed157'
     else if (healthValue > 35)
-        return '#e0b61c'
+        return '#e8c95a'
     else if (healthValue > 30)
-        return '#d6ab22'
-    else if (healthValue > 25)
-        return '#cb9e2a'
+        return '#e1c25f'
+    else if (healthValue > 25) //15 == 7
+        return '#dab864'
     else if (healthValue > 20)
-        return '#c29230'
+        return '#d9b864'
     else if (healthValue > 15)
-        return '#b98735'
+        return '#d2b068'
     else if (healthValue > 10)
-        return '#b17e3a'
+        return '#c6a170'
     else if (healthValue > 5)
-        return '#aa753e'
+        return '#c19c74'
     else if (healthValue > 0)
-        return '#a46e42'
+        return '#bd9777'
     else
-        return '#a06a45'
+        return '#b48f77'  //21 == 10
   };
 
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   paddingTop: 22,
+   //paddingTop: 22,
   },
   item: {
     padding: 10,
@@ -305,9 +309,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     //color: '#43a047'
   },
-  button: {
-    backgroundColor: '#43a047',
-    color: '#43a047'
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    //fontFamily: 'arial',
+    fontSize: 18,
+  },
+  subTitle: {
+    color: 'white',
+    //fontFamily: 'arial',
+    fontSize: 14,
+  },
+  chevron: {
+    color: 'white',
+    //fontFamily: 'arial',
+    //size: 14,
   },
 })
 
