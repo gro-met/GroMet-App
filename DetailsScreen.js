@@ -34,7 +34,7 @@ export default class DetailsScreen extends React.Component {
           flexDirection: 'column',
           marginHorizontal: '10%',
           marginVertical: '10%',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
         }}>
         <View style={{ flex: 1, alignItems: 'center' }} >
         <Image style={{ flex: 1, height: 150, width: 150, borderRadius: 150/2 }}
