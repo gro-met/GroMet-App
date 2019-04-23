@@ -13,9 +13,10 @@ export default class DetailsScreen extends React.Component {
       headerStyle: {
         backgroundColor: '#43a047',
       },
-      headerTintColor: '#000',
+      headerTintColor: 'white',
       headerTitleStyle: {
         fontWeight: 'bold',
+        color: 'white'
       },
     };
   };

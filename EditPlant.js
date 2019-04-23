@@ -35,9 +35,10 @@ export default class EditPlant extends React.Component {
       headerStyle: {
         backgroundColor: '#43a047',
       },
-      headerTintColor: '#000',
+      headerTintColor: 'white',
       headerTitleStyle: {
         fontWeight: 'bold',
+        color: 'white',
       },
     };
   };
@@ -91,7 +92,8 @@ export default class EditPlant extends React.Component {
 
 const styles = StyleSheet.create({
    container: {
-      paddingTop: 23
+      paddingTop: 23,
+      color: 'white'
    },
    input: {
       margin: 15,

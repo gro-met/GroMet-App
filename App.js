@@ -123,6 +123,8 @@ class MainPage extends Component {
           onRefresh={this.onRefresh.bind(this)}
           refreshing={this.state.refreshing}
           data={this.state.data}
+          data={this.state.data.sort((a,b) => getHealth(a) > getHealth(b))}
+          //data={getHealth(this.state).sort((a, b) => a.localeCompare(b))}
           extraData={Map({
             plants: this.props.data
           })}
@@ -247,7 +249,7 @@ class MainPage extends Component {
             return '#d6a782'
   ;}
 
-  getHealth = (item) => {
+ getHealth = (item) => {
       return ((item.data.latest_hum + item.data.latest_light) / 2)
   };
 
