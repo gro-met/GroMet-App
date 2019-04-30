@@ -15,7 +15,7 @@ var firebaseConfig = {
   storageBucket: "gromet-a0b7d.appspot.com",
   messagingSenderId: "539802681511"
 };
-firebase.initializeApp(firebaseConfig);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 var PlantData = [ // default data to display
     {

@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import ModalSelector from 'react-native-modal-selector';
 import ImagePicker from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob';
+import { firebaseApp } from './App.js';
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
@@ -16,7 +17,7 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
     const uploadUri = Platform.OS === 'ios'? uri.replace('file://', '') : uri
     const sessionId = new Date().getTime()
     let BlobUpload = null
-    const imageRef = storage.ref('images').child(`${sessionId}`)
+    const imageRef = firebaseApp.storage().ref('images').child(`${sessionId}`)
 
     fs.readFile(uploadUri, 'base64')
     .then((data) => {
@@ -126,6 +127,14 @@ export default class EditPlant extends React.Component {
         </ModalSelector>
 
         <TouchableOpacity
+          style = {styles.photoButton}
+          onPress = {
+            () => this.chooseImage()
+          }>
+          <Text style = {styles.submitButtonText}> Choose Image </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
             style = {styles.submitButton}
             onPress = {
             () => this.changeInfo(this.state.newName, this.state.newSpecies)
@@ -146,6 +155,12 @@ const styles = StyleSheet.create({
       height: 40,
       borderColor: '#13771b',
       borderWidth: 1
+   },
+   photoButton: {
+      backgroundColor: '#4a9b51',
+      padding: 10,
+      margin: 15,
+      height: 40,
    },
    submitButton: {
       backgroundColor: '#13771b',
