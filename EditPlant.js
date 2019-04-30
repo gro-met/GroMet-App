@@ -69,9 +69,12 @@ export default class EditPlant extends React.Component {
     );
   }
   chooseImage() {
+    const options = {
+      mediaType: 'photo',
+    }
     this.setState({ uploadURL: '' })
 
-    ImagePicker.launchImageLibrary({}, response => {
+    ImagePicker.showImagePicker({}, response => {
       uploadImage(response.uri)
         .then(url => this.setState({ uploadURL: url} ))
         .catch(error => console.log(error))
