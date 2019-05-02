@@ -14,7 +14,7 @@ export default class Todo extends React.Component {
           isChecked1:false,
           isChecked2:false,
           isChecked3:false,
-          stringy:"Have you loved me?",
+          stringy:"Am I a good boi?",
           watered:"Have I been watered?",
           appearsHealthy:"Am I healthy?",
           titleText: this.props.navigation.getParam('title', 'Info'),
@@ -38,10 +38,11 @@ export default class Todo extends React.Component {
     render(){
         //const { navigation } = this.props;
         return(
-            <View 
+            <View
+                
                 style = {styles.container}>
-                <Text>{this.state.titleText} your {this.state.speciesText} </Text>
-                <Text> needs these things.</Text>
+                <Text> {this.state.titleText} your {this.state.speciesText} </Text>
+                <Text> needs these things.{'\n'}{'\n'}</Text>
                 <View>
                     <CheckBox
                         label={this.state.watered}
@@ -82,14 +83,14 @@ export default class Todo extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        fontWeight: 'bold',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
     },
-    input: {
-       margin: 15,
-       height: 40,
-       borderColor: '#13771b',
-       borderWidth: 1
+    test:{
+        flex:1,
+        fontSize: 15,
+        color: 'red',
     }
  })
