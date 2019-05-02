@@ -47,17 +47,19 @@ export default class EditPlant extends React.Component {
     this.state = {
       newName: '',
       newSpecies: '',
+      uploadURL: '',
     }
   }
 
   handleName = (text) => {
       this.setState({ newName: text })
   }
-  changeInfo = (newName, newSpecies) => {
+  changeInfo = (newName, newSpecies, newImageURL) => {
     key = this.props.navigation.getParam('key', 'Info')
     firebase.database().ref('/info/' + key.id).update({
       name: newName,
-      species: newSpecies
+      species: newSpecies,
+      img: newImageURL,
     });
     Alert.alert(
       'Plant Data Changed',
@@ -149,7 +151,7 @@ export default class EditPlant extends React.Component {
         <TouchableOpacity
             style = {styles.submitButton}
             onPress = {
-            () => this.changeInfo(this.state.newName, this.state.newSpecies)
+            () => this.changeInfo(this.state.newName, this.state.newSpecies, this.state.uploadURL)
             }>
             <Text style = {styles.submitButtonText}> Submit Changes </Text>
         </TouchableOpacity>
