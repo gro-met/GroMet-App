@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform } from 'react-native';
 const { Map } = require('immutable');
 import firebase from 'firebase';
 import ModalSelector from 'react-native-modal-selector';
@@ -16,7 +16,7 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
   return new Promise((resolve, reject) => {
     const uploadUri = Platform.OS === 'ios'? uri.replace('file://', '') : uri
     const sessionId = new Date().getTime()
-    let BlobUpload = null
+    let uploadBlob = null
     const imageRef = firebaseApp.storage().ref('images').child(`${sessionId}`)
 
     fs.readFile(uploadUri, 'base64')
@@ -24,11 +24,11 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
       return Blob.build(data, { type: `${mime};BASE64`} )
     })
     .then((blob) => {
-      BlobUpload = blob
-      return imageRef.put(blob, {contentType: mime })
+      uploadBlob = blob
+      return imageRef.put(blob, { contentType: mime })
     })
     .then(() => {
-      BlobUpload.close()
+      uploadBlob.close()
       return imageRef.getDownloadURL()
     })
     .then((url) => {
@@ -46,7 +46,7 @@ export default class EditPlant extends React.Component {
 
     this.state = {
       newName: '',
-      newSpecies: ''
+      newSpecies: '',
     }
   }
 
@@ -69,12 +69,21 @@ export default class EditPlant extends React.Component {
     );
   }
   chooseImage() {
-    const options = {
-      mediaType: 'photo',
-    }
     this.setState({ uploadURL: '' })
 
     ImagePicker.showImagePicker({}, response => {
+      console.log('Response: ', response);
+
+      if(response.didCancel) {
+        console.log('User cancelled picker');
+      }
+      else if(response.error) {
+        console.log('ImagePicker error: ', response.error);
+      }
+      else if(response.customButton) {
+        console.log('Pressed custom button: ', response.customButton);
+      }
+
       uploadImage(response.uri)
         .then(url => this.setState({ uploadURL: url} ))
         .catch(error => console.log(error))
