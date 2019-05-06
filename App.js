@@ -9,6 +9,7 @@ import EditPlant from './EditPlant';
 import Todo from './Todo';
 
 var PushNotification = require('react-native-push-notification');
+var alreadyNotified = false;
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -107,6 +108,7 @@ class MainPage extends Component {
   );
 
   render() {
+    alreadyNotified=false;
     return (
       <View style={styles.container}>
         <StatusBar
@@ -256,10 +258,10 @@ PushNotification.configure({
 
 
 getHealth = (item) => {
-  if (((item.data.latest_hum + item.data.latest_light) / 2) < 20){
+  if (((item.data.latest_hum + item.data.latest_light) / 2) < 20 && alreadyNotified!=true){
     PushNotification.localNotification({
       autoCancel: true,
-      bigText: "You have a plant under 50% health!",
+      bigText: "You have a plant under 20% health!",
       color: "red",
       vibrate: true,
       vibration: 300,
@@ -268,10 +270,13 @@ getHealth = (item) => {
       title: "Unhealthy Plant:",
       message: "Notification message",
       playSound: true,
-      actions: '["Okay"]',
+      actions: '["OK"]',
     });
+  alreadyNotified = true;
+  }
   return ((item.data.latest_hum + item.data.latest_light) / 2)
-}}
+}
+
 
 const styles = StyleSheet.create({
   container: {
