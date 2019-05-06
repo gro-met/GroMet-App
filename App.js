@@ -1,11 +1,13 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert, StatusBar } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert, StatusBar, PushNotificationIOS } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 const { Map } = require('immutable');
 import firebase from 'firebase';
 import DetailsScreen from './DetailsScreen';
 import EditPlant from './EditPlant';
+
+var PushNotification = require('react-native-push-notification');
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -30,8 +32,6 @@ var PlantData = [ // default data to display
         light: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       }
     }];
-
-
 
 
 class MainPage extends Component {
@@ -118,6 +118,7 @@ class MainPage extends Component {
           onRefresh={this.onRefresh.bind(this)}
           refreshing={this.state.refreshing}
           data={this.state.data}
+          data={this.state.data.sort((a,b) => getHealth(a) > getHealth(b))}
           extraData={Map({
             plants: this.props.data
           })}
@@ -230,6 +231,47 @@ class MainPage extends Component {
   });
 })();
 ////////////////////////// END FIREBASE CODE ///////////////////////////////////
+
+
+PushNotification.configure({
+  onRegister: function(token) {
+    console.log( 'TOKEN:', token );
+  },
+
+  onNotification: function(notification) {
+    console.log( 'NOTIFICATION:', notification );
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  },
+
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true
+  },
+
+  popInitialNotification: true,
+  requestPermissions:true,
+});
+
+
+
+getHealth = (item) => {
+  if (((item.data.latest_hum + item.data.latest_light) / 2) < 20){
+    PushNotification.localNotification({
+      autoCancel: true,
+      bigText: "You have a plant under 50% health!",
+      color: "red",
+      vibrate: true,
+      vibration: 300,
+      ongoing: false,
+      importance: "high",
+      title: "Unhealthy Plant:",
+      message: "Notification message",
+      playSound: true,
+      actions: '["Okay"]',
+    });
+  return ((item.data.latest_hum + item.data.latest_light) / 2)
+}}
 
 const styles = StyleSheet.create({
   container: {
