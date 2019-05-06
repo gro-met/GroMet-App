@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert, StatusBar } from 'react-native';
+import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert, StatusBar, PushNotificationIOS } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 const { Map } = require('immutable');
@@ -7,6 +7,9 @@ import firebase from 'firebase';
 import DetailsScreen from './DetailsScreen';
 import EditPlant from './EditPlant';
 import Todo from './Todo';
+
+var PushNotification = require('react-native-push-notification');
+var alreadyNotified = false;
 
 var firebaseConfig = {
   apiKey: "AIzaSyD5lJW2xnGJXHzijMyJMHVTEa_60z6x2X4",
@@ -110,6 +113,7 @@ class MainPage extends Component {
   );
 
   render() {
+    alreadyNotified=false;
     return (
       <View style={styles.container}>
         <StatusBar
@@ -235,9 +239,48 @@ class MainPage extends Component {
 })();
 ////////////////////////// END FIREBASE CODE ///////////////////////////////////
 
-  getHealth = (item) => {
-      return ((item.data.latest_hum + item.data.latest_light) / 2)
-  };
+PushNotification.configure({
+  onRegister: function(token) {
+    console.log( 'TOKEN:', token );
+  },
+
+  onNotification: function(notification) {
+    console.log( 'NOTIFICATION:', notification );
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  },
+
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true
+  },
+
+  popInitialNotification: true,
+  requestPermissions:true,
+});
+
+
+
+getHealth = (item) => {
+  if (((item.data.latest_hum + item.data.latest_light) / 2) < 20 && alreadyNotified!=true){
+    PushNotification.localNotification({
+      autoCancel: true,
+      bigText: "You have a plant under 20% health!",
+      color: "red",
+      vibrate: true,
+      vibration: 300,
+      ongoing: false,
+      importance: "high",
+      title: "Unhealthy Plant:",
+      message: "Notification message",
+      playSound: true,
+      actions: '["OK"]',
+    });
+  alreadyNotified = true;
+  }
+  return ((item.data.latest_hum + item.data.latest_light) / 2)
+}
+
 
   getColor = (healthValue) => {
     if (healthValue > 95)
