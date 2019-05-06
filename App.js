@@ -41,6 +41,7 @@ class MainPage extends Component {
     headerTintColor: '#000',
     headerTitleStyle: {
       fontWeight: 'bold',
+      color: 'white',
     },
   };
   constructor(props) {
@@ -90,17 +91,21 @@ class MainPage extends Component {
 
   _renderItem = ({item}) => (
     <ListItem
-      button onPress={() => this.props.navigation.navigate('Details',
-          {data: item.data, title: item.name, img: item.img, species: item.species})}
-      button onLongPress={() => this.props.navigation.navigate('Edit',
+      containerStyle = {styles.item, {backgroundColor: getColor(getHealth(item))}}
+      onPress={() => this.props.navigation.navigate('Details',
+          {data: item.data, title: item.name, img: item.img})}
+      onLongPress={() => this.props.navigation.navigate('Edit',
           {key: item, data: item.data, title: item.name, img: item.img})}
       roundAvatar
       selected={!!this.state.selected.get(item.id)}
+      titleStyle = {styles.title}
+      subtitleStyle = {styles.subTitle}
       title={`${item.name} ${item.species !== "" ? '(' : ''}${item.species}${item.species !== "" ? ')' : ''}`}
       subtitle={`Humidity: ${item.data.latest_hum}\nLight Exposure: ${item.data.latest_light}`}
       leftAvatar={{ source: { uri: item.img } }}
       topDivider={true}
       bottomDivider={false}
+      chevron //style = {color: 'white'}
     />
   );
 
@@ -116,6 +121,7 @@ class MainPage extends Component {
           onRefresh={this.onRefresh.bind(this)}
           refreshing={this.state.refreshing}
           data={this.state.data}
+          data={this.state.data.sort((a,b) => getHealth(a) > getHealth(b))}
           extraData={Map({
             plants: this.props.data
           })}
@@ -229,15 +235,80 @@ class MainPage extends Component {
 })();
 ////////////////////////// END FIREBASE CODE ///////////////////////////////////
 
+  getHealth = (item) => {
+      return ((item.data.latest_hum + item.data.latest_light) / 2)
+  };
+
+  getColor = (healthValue) => {
+    if (healthValue > 95)
+        return '#77ba72'
+    else if (healthValue > 90)
+        return '#7ebc71'
+    else if (healthValue > 85)
+        return '#87be6f'
+    else if (healthValue > 80)
+        return '#91c06c'
+    else if (healthValue > 75)  //5 == 2
+        return '#9fc468'
+    else if (healthValue > 70)
+        return '#acc665'
+    else if (healthValue > 65)
+        return '#bcca61'
+    else if (healthValue > 60)
+        return '#cdce5c'
+    else if (healthValue > 55)
+        return '#ddd259a'
+    else if (healthValue > 50) //10 == 4.5
+        return '#ebd556'
+    else if (healthValue > 45)
+        return '#f3d654'
+    else if (healthValue > 40)
+        return '#eed157'
+    else if (healthValue > 35)
+        return '#e8c95a'
+    else if (healthValue > 30)
+        return '#e1c25f'
+    else if (healthValue > 25) //15 == 7
+        return '#dab864'
+    else if (healthValue > 20)
+        return '#d9b864'
+    else if (healthValue > 15)
+        return '#d2b068'
+    else if (healthValue > 10)
+        return '#c6a170'
+    else if (healthValue > 5)
+        return '#c19c74'
+    else if (healthValue > 0)
+        return '#bd9777'
+    else
+        return '#b48f77'  //21 == 10
+  };
+
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   paddingTop: 22
+   //paddingTop: 22
   },
   item: {
     padding: 10,
     fontSize: 18,
-    height: 44,
+    height: 76,
+  },
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    //fontFamily: 'arial',
+    fontSize: 18,
+  },
+  subTitle: {
+    color: 'white',
+    //fontFamily: 'arial',
+    fontSize: 14,
+  },
+  chevron: {
+    color: 'white',
+    //fontFamily: 'arial',
+    //size: 14,
   },
 })
 
