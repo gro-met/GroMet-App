@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import { View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Button,View, FlatList, List, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { LineChart, Grid, XAxis, YAxis } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Emoji from 'react-native-emoji';
+import Todo from './Todo';
 
 export default class DetailsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -21,6 +22,8 @@ export default class DetailsScreen extends React.Component {
   };
   render() {
     const { navigation } = this.props;
+    const plantName = navigation.getParam('title', 'Info');
+    const plantSpecies = navigation.getParam('species', 'Info');
     const data = navigation.getParam('data',
     {
       hum: [0,0,0,0,0,0,0,0,0,0],
@@ -88,7 +91,33 @@ export default class DetailsScreen extends React.Component {
             />
           </View>
         </View>
+        <TouchableOpacity
+            style = {styles.submitButton}
+            button onPress = {() => this.props.navigation.navigate('Todo',
+              {species: plantSpecies, title: plantName})}>
+            <Text style = {styles.submitButtonText}> Todo for {plantName}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+     paddingTop: 23
+  },
+  input: {
+     margin: 15,
+     height: 40,
+     borderColor: '#13771b',
+     borderWidth: 1
+  },
+  submitButton: {
+     backgroundColor: '#43a047',
+     padding: 10,
+     margin: 15,
+     height: 40,
+  },
+  submitButtonText:{
+     color: 'white'
+  }
+})

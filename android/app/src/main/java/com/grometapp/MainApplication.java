@@ -4,6 +4,9 @@ import android.app.Application;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.imagepicker.ImagePickerPackage;
 import com.horcrux.svg.SvgPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -28,7 +31,10 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new SvgPackage(),
           new RNGestureHandlerPackage(),
-          new ReactNativePushNotificationPackage()
+          new ReactNativePushNotificationPackage(),
+          new RNFetchBlobPackage(),
+          new VectorIconsPackage(),
+          new ImagePickerPackage()
       );
     }
 

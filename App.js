@@ -6,6 +6,7 @@ const { Map } = require('immutable');
 import firebase from 'firebase';
 import DetailsScreen from './DetailsScreen';
 import EditPlant from './EditPlant';
+import Todo from './Todo';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -17,7 +18,7 @@ var firebaseConfig = {
   storageBucket: "gromet-a0b7d.appspot.com",
   messagingSenderId: "539802681511"
 };
-firebase.initializeApp(firebaseConfig);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 var PlantData = [ // default data to display
     {
@@ -32,7 +33,6 @@ var PlantData = [ // default data to display
         light: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       }
     }];
-
 
 class MainPage extends Component {
   static navigationOptions = {
@@ -93,7 +93,7 @@ class MainPage extends Component {
   _renderItem = ({item}) => (
     <ListItem
       button onPress={() => this.props.navigation.navigate('Details',
-          {data: item.data, title: item.name, img: item.img})}
+          {data: item.data, title: item.name, img: item.img, species: item.species})}
       button onLongPress={() => this.props.navigation.navigate('Edit',
           {key: item, data: item.data, title: item.name, img: item.img})}
       roundAvatar
@@ -290,6 +290,7 @@ const AppNavigator = createStackNavigator(
   Home: MainPage,
   Details: DetailsScreen,
   Edit: EditPlant,
+  Todo: Todo,
   },
   {
     initialRouteName: "Home"
