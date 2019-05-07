@@ -18,7 +18,7 @@ export default class Todo extends React.Component {
           watered:"Have I been watered?",
           appearsHealthy:"Am I healthy?",
           titleText: this.props.navigation.getParam('title', 'Info'),
-          speciesText:this.props.navigation.getParam('species', 'Info')
+          //speciesText:this.props.navigation.getParam('species', 'Info')
         }
       }
 
@@ -42,7 +42,7 @@ export default class Todo extends React.Component {
             <View
                 
                 style = {styles.container}>
-                <Text> {this.state.titleText} your {this.state.speciesText} </Text>
+                <Text> {this.state.titleText}</Text>
                 <Text> needs these things.{'\n'}{'\n'}</Text>
                 <View>
                     <CheckBox
